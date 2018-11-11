@@ -1,5 +1,6 @@
-package com.processor;
+package com.processor.log;
 
+import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.*;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  * @author dwang
  * @since 02.11.18
  */
+@AutoService(Logged.class)
 public class LoggedProcessor extends AbstractProcessor {
     private Elements elementUtils;
     private Filer filer;

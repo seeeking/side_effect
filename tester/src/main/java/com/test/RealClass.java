@@ -1,6 +1,6 @@
 package com.test;
 
-import com.processor.Logged;
+import com.processor.log.Logged;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.processor;
+package com.processor.chain;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,9 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * @author dwang
- * @since 02.11.18
+ * @since 05.11.18
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Logged {
+public @interface Chain {
+    Class<?> downStreamClass();
+    String downStreamMethod();
 }
