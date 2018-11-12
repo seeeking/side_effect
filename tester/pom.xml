@@ -35,9 +35,9 @@
                     <version>3.2</version>
                     <configuration>
                         <annotationProcessors>
-                            <!--<value>com.processor.log.LoggedProcessor</value>-->
+                            <value>com.processor.log.LoggedProcessor</value>
                             <value>com.processor.chain.ChainProcessor</value>
-                            <value>com.processor.uniquename.UniqueNameProcessor</value>
+                            <!--<value>com.processor.uniquename.UniqueNameProcessor</value>-->
                         </annotationProcessors>
                     </configuration>
                 </plugin>
