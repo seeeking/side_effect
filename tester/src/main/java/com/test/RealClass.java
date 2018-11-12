@@ -11,8 +11,8 @@ import static java.util.stream.Collectors.joining;
  * @author dwang
  * @since 03.11.18
  */
-@Logged
 public class RealClass {
+    @Logged
     public String realMethod(String[] args, int number) {
         System.out.println("Real method called!");
         return Arrays.stream(args)
