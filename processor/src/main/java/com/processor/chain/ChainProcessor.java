@@ -1,7 +1,6 @@
 package com.processor.chain;
 
 import com.google.auto.service.AutoService;
-import com.processor.log.Logged;
 
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;

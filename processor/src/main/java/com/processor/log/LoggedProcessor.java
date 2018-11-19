@@ -1,6 +1,9 @@
 package com.processor.log;
 
 import com.google.auto.service.AutoService;
+import com.processor.util.decorator.ClassDecorator;
+import com.processor.util.decorator.LogParamDecorator;
+import com.processor.util.decorator.MethodDecorator;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -12,7 +15,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -21,8 +23,8 @@ import java.util.stream.Collectors;
  */
 @AutoService(Logged.class)
 public class LoggedProcessor extends AbstractProcessor {
-    private static final String suffix = "Logged";
-    private MethodWrapper methodWrapper = new MethodWrapper(suffix);
+    private static final String suffix = "logged";
+    private ClassDecorator classDecorator = new ClassDecorator(suffix);
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -64,7 +66,8 @@ public class LoggedProcessor extends AbstractProcessor {
                             classesToProcess.add((TypeElement) ele.getEnclosingElement());
                         }
                     });
-            classesToProcess.forEach(ele -> generateSource(ele, methodToDecorate::contains));
+            MethodDecorator methodDecorator = new LogParamDecorator(methodToDecorate::contains);
+            classesToProcess.forEach(ele -> generateSource(ele, methodDecorator));
         } catch (RuntimeException e) {
             return true;
         }
@@ -72,11 +75,11 @@ public class LoggedProcessor extends AbstractProcessor {
         return false;
     }
 
-    private void generateSource(TypeElement element, Predicate<ExecutableElement> shouldDecorate) {
+    private void generateSource(TypeElement element, MethodDecorator methodDecorator) {
         try {
             PackageElement pkg = processingEnv.getElementUtils().getPackageOf(element);
             String pkgName = pkg.isUnnamed() ? "" : pkg.getQualifiedName().toString();
-            methodWrapper.generateSource(element, pkgName, shouldDecorate).writeTo(processingEnv.getFiler());
+            classDecorator.generateSource(element, pkgName, methodDecorator).writeTo(processingEnv.getFiler());
         } catch (IOException e) {
             error(element, "Failed to generate source: %s", e.getMessage());
             throw new RuntimeException(e);
@@ -99,4 +102,3 @@ public class LoggedProcessor extends AbstractProcessor {
                 e);
     }
 }
-
